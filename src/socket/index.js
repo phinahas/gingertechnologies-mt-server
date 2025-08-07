@@ -1,7 +1,8 @@
 const chatSocket = require('./chatSocket');
 const socketAuthMiddleware = require('../middlewares/socketAuthVerification');
 
-const { toogleUserStatus } = require('../services/user.services')
+const { toogleUserStatus } = require('../services/user.services');
+const XoxSocket = require('./XoxSocket');
 
 const socketSetup = (io) => {
 
@@ -25,6 +26,7 @@ const socketSetup = (io) => {
 
    
     chatSocket(io, socket, onlineUsers);
+    XoxSocket(io,socket,onlineUsers);
   });
 
 
