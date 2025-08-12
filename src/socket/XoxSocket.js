@@ -1,5 +1,5 @@
 
-const { createRoom, joinRoom } = require('../services/xox.services');
+const { createRoom, joinRoom, makeMove } = require('../services/xox.services');
 
 module.exports = (io, socket, onlineUsers) => {
 
@@ -58,13 +58,21 @@ module.exports = (io, socket, onlineUsers) => {
         }
     })
 
-    socket.on('makeMove',({roomId})=>{
+    socket.on('makeMove', async ({ roomId, col, row }) => {
         try {
-            
+
             console.log(roomId)
+            const res = await makeMove({ col: col, roomId: roomId, row: row, userId: socket.user?._id });
+            console.log(res)
+            if (res.statusCode == 200) {
+                io.to(roomId).emit('res_makeMove', {
+                    movedDetails: res.xoxRoom
+                })
+            }
+
 
         } catch (error) {
-            
+            console.log(error)
         }
     })
 
